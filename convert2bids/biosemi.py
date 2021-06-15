@@ -1,10 +1,11 @@
 def clean_biosemi(raw):
-    remove_duplicate_channels(raw)
-    remap_extra_channels(raw)
-    remap_stim_channel(raw)
+    _remove_duplicate_channels(raw)
+    _remap_extra_channels(raw)
+    _remap_stim_channel(raw)
+    raw.set_montage('standard_1020')
 
 
-def remove_duplicate_channels(raw):
+def _remove_duplicate_channels(raw):
     for chan in raw.ch_names:
         if chan.endswith('-1'):
             raw.drop_channels([chan])
@@ -12,7 +13,7 @@ def remove_duplicate_channels(raw):
             raw.rename_channels({chan: chan[:-2]})
 
 
-def remap_extra_channels(raw):
+def _remap_extra_channels(raw):
     raw.rename_channels({'EXG1': 'TP9', 'EXG2': 'TP10'})
     raw.set_channel_types({'TP9': 'eeg', 'TP10': 'eeg'})
     eog_channels = ['EXG3', 'EXG4', 'EXG5', 'EXG6']
@@ -21,6 +22,6 @@ def remap_extra_channels(raw):
     raw.set_channel_types({chan: 'ecg' for chan in ecg_channels})
 
 
-def remap_stim_channel(raw):
-    raw.rename_channels({'Status': 'stim'})
-    raw.set_channel_types({'stim': 'stim'})
+def _remap_stim_channel(raw):
+    raw.rename_channels({'Status': 'STIM'})
+    raw.set_channel_types({'STIM': 'stim'})

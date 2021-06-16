@@ -7,5 +7,11 @@ BIDS is a standard format to store neuroimaging datasets (https://bids.neuroimag
 
 ## Installation
 
-
 ## Usage
+
+## Steps to take after dataset generation
+
+* Fill in dataset README
+* Fill in `dataset_description.json`
+* Fill in event ids
+* mark bad channels and epochs

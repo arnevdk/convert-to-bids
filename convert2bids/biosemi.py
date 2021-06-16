@@ -26,16 +26,37 @@ class BioSemiBDFProcessor(Processor):
         return raw
 
     def _remap_extra_channels(self, raw):
-        raw.rename_channels({'EXG1': 'TP9', 'EXG2': 'TP10'})
-        raw.set_channel_types({'TP9': 'eeg', 'TP10': 'eeg'})
-        eog_channels = ['EXG3', 'EXG4', 'EXG5', 'EXG6']
-        raw.set_channel_types({chan: 'eog' for chan in eog_channels})
-        ecg_channels = ['EXG7', 'EXG8']
-        raw.set_channel_types({chan: 'ecg' for chan in ecg_channels})
+        raw.rename_channels({
+            'EXG1': 'TP9',
+            'EXG2': 'TP10'
+        })
+        raw.set_channel_types({
+            'TP9': 'eeg',
+            'TP10': 'eeg'
+        })
+        raw.rename_channels({
+            'EXG3': 'EOG1',
+            'EXG4': 'EOG2',
+            'EXG5': 'EOG3',
+            'EXG6': 'EOG4'
+        })
+        raw.set_channel_types({
+            'EOG1': 'eog',
+            'EOG2': 'eog',
+            'EOG3': 'eog',
+            'EOG4': 'eog',
+        })
+        raw.rename_channels({
+            'EXG7': 'ECG1',
+            'EXG8': 'ECG2',
+        })
+        raw.set_channel_types({
+            'ECG1': 'ecg',
+            'ECG2': 'ecg',
+        })
         return raw
 
     def _remap_stim_channel(self, raw):
         raw.rename_channels({'Status': 'STIM'})
         raw.set_channel_types({'STIM': 'stim'})
         return raw
-

@@ -1,4 +1,6 @@
-from mne.io import read_raw_curry
+from mne import pick_info, find_events
+from mne.io import read_raw_curry, RawArray
+import numpy as np
 
 from convert2bids.common import Processor
 
@@ -15,6 +17,16 @@ class NeuroScanCurry7Processor(Processor):
     def _load_raw(self):
         raw = read_raw_curry(self.raw_path, preload=False)
         return raw
+
+    def _find_events(self, raw):
+        stim_data = raw.get_data(picks=['STIM'])
+        stim_data[0, :] = np.round(stim_data[0, :] * 1e6).astype(int)
+        stim_chan_id = raw.info['ch_names'].index('STIM')
+        stim_raw = RawArray(stim_data, pick_info(raw.info,
+                                                 sel=[stim_chan_id]))
+        events = find_events(stim_raw, consecutive=False, shortest_event=0,
+                             min_duration=2 / stim_raw.info['sfreq'])
+        return events
 
     def _remap_extra_channels(self, raw):
         raw.set_channel_types({'hEOG': 'eog', 'vEOG': 'eog'})

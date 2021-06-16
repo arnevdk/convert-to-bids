@@ -5,7 +5,7 @@ import os
 import numpy as np
 from mne_bids import BIDSPath, write_raw_bids
 from convert2bids.biosemi import BioSemiBDFProcessor
-from convert2bids.util import _copy_sourcedata
+from convert2bids.utils import _copy_sourcedata
 
 
 @click.command()

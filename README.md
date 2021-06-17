@@ -9,9 +9,9 @@ at https://bids.neuroimaging.io/index.html
 ## Installation
 Install with
 ```shell
-pip install git+https://gitlab.kuleuven.be/compneuro/convert-to-bids.git
+pip install git+https://gitlab.kuleuven.be/compneuro/convert-to-bids.git # after setting an account password
 # or
-pip install git+ssh://git@gitlab.kuleuven.be:compneuro/convert-to-bids.git
+pip install git+ssh://git@gitlab.kuleuven.be:compneuro/convert-to-bids.git  # after adding an account ssh-key
 ```
 
 ## Usage

@@ -12,9 +12,9 @@ A walktrough can be found at https://github.com/bids-standard/bids-starter-kit/w
 Install with
 
 ```shell
-pip install git+https://gitlab.kuleuven.be/compneuro/convert-to-bids.git
+pip install git+https://gitlab.kuleuven.be/compneuro/convert-to-bids.git # after setting an account password
 # or
-pip install git+ssh://git@gitlab.kuleuven.be:compneuro/convert-to-bids.git
+pip install git+ssh://git@gitlab.kuleuven.be:compneuro/convert-to-bids.git  # after adding an account ssh-key
 ```
 
 ## Usage
@@ -93,3 +93,4 @@ and writes the data to `sub-001` and `sub-002` with task `oddball` to the BIDS d
     * ...
 1. event ids
 1. Mark bad channels and epochs TODO: how?
+

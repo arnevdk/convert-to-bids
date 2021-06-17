@@ -22,22 +22,21 @@ Convert .dat files to BIDS dataset.
     nscurry2bids [OPTIONS] [RAW_FILES]... TASK OUTPUT_PATH
 
 
-Clean the NeuroScann Curry 7 format .bdf files specified in RAW_FILES and
-add them to to a BIDS format dataset stored in OUTPUT_PATH.
+Clean the NeuroScan Curry 7 format `.dat` files specified in `RAW_FILES` and
+add them to a BIDS format dataset stored in `OUTPUT_PATH`.
 The .dat files should be recorded by the lab equipment while performing
-experimental task TASK.
-These files need to be accompanied in the same directory by their .dat,
-.dap and .rs3 files with metadata.
-These files is optionally accompanied in the same directory by a .txt
+experimental task `TASK`.
+These files need to be accompanied in the same directory by their `.dat`,
+`.dap` and `.rs3` files with metadata.
+These files is optionally accompanied in the same directory by a `.txt`
 experiment log file with the same filename.
 
 For example,
 
     nscurry2bids data/subject_01.bdf data/subject_02.bdf oddball oddball_32
 
-converts the .bdf files in
+converts the `.bdf` files in
 
-\b
     data
     ├── subject_01.ceo
     ├── subject_01.dap
@@ -52,9 +51,9 @@ converts the .bdf files in
 
 
 cleans up the data's channel names and metadata, verifies the registration
-of all stimuli logged in respectively subject_01.txt and subject_02.txt
-and writes the data to sub-001 and sub-002 with tasks oddball to the BIDS
-dataset stored in oddball_32.
+of all stimuli logged in respectively `subject_01.txt` and `subject_02.txt`
+and writes the data to `sub-001` and `sub-002` with tasks oddball to the BIDS
+dataset stored in `oddball_32`.
 ### BioSemi
 
 Convert `.bdf` files to BIDS dataset.

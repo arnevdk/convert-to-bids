@@ -4,10 +4,13 @@ This repository contains scripts to and convert the biosensor data recorded with
 BIDS-compliant dataset for data sharing and processing.
 
 BIDS is a standard format to store neuroimaging datasets. More information the BIDS specification can be found
-at https://bids.neuroimaging.io/index.html
+at https://bids.neuroimaging.io/index.html .
+A walktrough can be found at https://github.com/bids-standard/bids-starter-kit/wiki/Tutorials .
 
 ## Installation
+
 Install with
+
 ```shell
 pip install git+https://gitlab.kuleuven.be/compneuro/convert-to-bids.git
 # or
@@ -17,18 +20,15 @@ pip install git+ssh://git@gitlab.kuleuven.be:compneuro/convert-to-bids.git
 ## Usage
 
 ### Neuroscan Curry 7
+
 Convert .dat files to BIDS dataset.
 
     nscurry2bids [OPTIONS] [RAW_FILES]... TASK OUTPUT_PATH
 
-
-Clean the NeuroScan Curry 7 format `.dat` files specified in `RAW_FILES` and
-add them to a BIDS format dataset stored in `OUTPUT_PATH`.
-The .dat files should be recorded by the lab equipment while performing
-experimental task `TASK`.
+Clean the NeuroScan Curry 7 format `.dat` files specified in `RAW_FILES` and add them to a BIDS format dataset stored
+in `OUTPUT_PATH`. The .dat files should be recorded by the lab equipment while performing experimental task `TASK`.
 These files need to be accompanied in the same directory by their `.dat`,
-`.dap` and `.rs3` files with metadata.
-These files is optionally accompanied in the same directory by a `.txt`
+`.dap` and `.rs3` files with metadata. These files is optionally accompanied in the same directory by a `.txt`
 experiment log file with the same filename.
 
 For example,
@@ -49,11 +49,10 @@ converts the `.bdf` files in
     ├── subject_02.rs3
     └── subject_02.txt
 
+cleans up the data's channel names and metadata, verifies the registration of all stimuli logged in
+respectively `subject_01.txt` and `subject_02.txt`
+and writes the data to `sub-001` and `sub-002` with tasks oddball to the BIDS dataset stored in `oddball_32`.
 
-cleans up the data's channel names and metadata, verifies the registration
-of all stimuli logged in respectively `subject_01.txt` and `subject_02.txt`
-and writes the data to `sub-001` and `sub-002` with tasks oddball to the BIDS
-dataset stored in `oddball_32`.
 ### BioSemi
 
 Convert `.bdf` files to BIDS dataset.
@@ -85,7 +84,12 @@ and writes the data to `sub-001` and `sub-002` with task `oddball` to the BIDS d
 
 ## Steps to take after dataset generation
 
-* Fill in dataset README
-* Fill in `dataset_description.json`
-* Fill in event ids
-* Mark bad channels and epochs TODO: how?
+1. Complete the dataset by filling out the necessary files:  
+    * dataset_description.json
+    * README
+    * CHANGES
+    * LICENSE
+    * participants.tsv
+    * ...
+1. event ids
+1. Mark bad channels and epochs TODO: how?

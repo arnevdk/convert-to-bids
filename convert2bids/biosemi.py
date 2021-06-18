@@ -1,9 +1,10 @@
+from mne import set_bipolar_reference
 from mne.io import read_raw_bdf
 
 from convert2bids.common import Processor
 
 
-class BioSemiBDFProcessor(Processor):
+class BioSemiProcessor(Processor):
 
     def _clean_raw(self, raw):
         raw = super()._clean_raw(raw)
@@ -30,29 +31,19 @@ class BioSemiBDFProcessor(Processor):
             'EXG1': 'TP9',
             'EXG2': 'TP10'
         })
+        raw.load_data()
+        set_bipolar_reference(raw, 'EXG3', 'EXG4', ch_name='hEOG',
+                              drop_refs=True, copy=False)
+        set_bipolar_reference(raw, 'EXG5', 'EXG6', ch_name='vEOG',
+                              drop_refs=True, copy=False)
+        set_bipolar_reference(raw, 'EXG7', 'EXG8', ch_name='ECG',
+                              drop_refs=True, copy=False)
         raw.set_channel_types({
             'TP9': 'eeg',
-            'TP10': 'eeg'
-        })
-        raw.rename_channels({
-            'EXG3': 'EOG1',
-            'EXG4': 'EOG2',
-            'EXG5': 'EOG3',
-            'EXG6': 'EOG4'
-        })
-        raw.set_channel_types({
-            'EOG1': 'eog',
-            'EOG2': 'eog',
-            'EOG3': 'eog',
-            'EOG4': 'eog',
-        })
-        raw.rename_channels({
-            'EXG7': 'ECG1',
-            'EXG8': 'ECG2',
-        })
-        raw.set_channel_types({
-            'ECG1': 'ecg',
-            'ECG2': 'ecg',
+            'TP10': 'eeg',
+            'hEOG': 'eog',
+            'vEOG': 'eog',
+            'ECG': 'ecg',
         })
         return raw
 

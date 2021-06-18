@@ -53,6 +53,9 @@ cleans up the data's channel names and metadata, verifies the registration of al
 respectively `subject_01.txt` and `subject_02.txt`
 and writes the data to `sub-001` and `sub-002` with tasks oddball to the BIDS dataset stored in `oddball_32`.
 
+See `nscurry2bids --help` for more options.
+
+
 ### BioSemi
 
 Convert `.bdf` files to BIDS dataset.
@@ -80,6 +83,8 @@ cleans up the data's channel names and metadata, verifies the registration of al
 respectively `subject_01.txt` and `subject_02.txt`
 and writes the data to `sub-001` and `sub-002` with task `oddball` to the BIDS dataset stored in `oddball_32`.
 
+See `biosemi2bids --help` for more options.
+
 ### Log files
 
 ## Steps to take after dataset generation
@@ -92,5 +97,10 @@ and writes the data to `sub-001` and `sub-002` with task `oddball` to the BIDS d
     * participants.tsv
     * ...
 1. event ids
-1. Mark bad channels and epochs TODO: how?
+1. Mark bad channels and epochs using
+   the ```mne_bids inspect``` command, e.g.   
+   ```shell
+   mne_bids inspect --bids_root=data/test_32_bids/rawdata/ --subject_id=001 --l_freq=0.5 --h_freq=30
+   ```
+   For more information, see https://mne.tools/mne-bids/stable/auto_examples/mark_bad_channels.html
 

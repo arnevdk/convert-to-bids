@@ -81,11 +81,13 @@ converts the .bdf files in
 
 cleans up the data's channel names and metadata, verifies the registration of all stimuli logged in
 respectively `subject_01.txt` and `subject_02.txt`
-and writes the data to `sub-001` and `sub-002` with task `oddball` to the BIDS dataset stored in `oddball_32`.
+and writes the data to `sub-subject01` and `sub-subject02` with task `oddball` to the BIDS dataset stored in `oddball_32`.
 
 See `biosemi2bids --help` for more options.
 
 ### Log files
+
+# TODO: document
 
 ## Steps to take after dataset generation
 

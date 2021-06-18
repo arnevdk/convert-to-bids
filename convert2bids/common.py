@@ -34,11 +34,12 @@ class Processor(ABC):
     def _find_events(self, raw):
         stim_data = raw.get_data(picks=['STIM'])
         stim_data[0, :] = np.round(stim_data[0, :]).astype(int)
+        first_zero_idx = np.where(stim_data == 0)[1][0]
+        stim_data[:, :first_zero_idx] = 0
         stim_chan_id = raw.info['ch_names'].index('STIM')
-        stim_raw = mne.io.RawArray(stim_data, pick_info(raw.info,
-                                                        sel=[stim_chan_id]))
-        events = find_events(stim_raw, consecutive=False, shortest_event=0,
-                             min_duration=2 / stim_raw.info['sfreq'])
+        stim_info = pick_info(raw.info, sel=[stim_chan_id])
+        stim_raw = mne.io.RawArray(stim_data, stim_info)
+        events = find_events(stim_raw, consecutive=True, shortest_event=2)
         return events
 
     def _check_events(self, events):

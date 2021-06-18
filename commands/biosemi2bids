@@ -71,6 +71,7 @@ def biosemi2bids(raw_files, task, output_path, format):
         raw.save(temp_raw_path)
         raw = read_raw_fif(temp_raw_path)
         subject_id = os.path.splitext(raw_path)[0]
+        subject_id = subject_id.split('/')[-1]
         subject_id = ''.join(ch for ch in subject_id if ch.isalnum())
         bids_path = BIDSPath(subject=subject_id, task=task, root=rawdata_path,
                              run=None, session=None)

@@ -87,7 +87,7 @@ See `biosemi2bids --help` for more options.
 
 ### Log files
 
-# TODO: document logfile format
+! TODO: document logfile format
 see equipmentlib
 
 ## Steps to take after dataset generation
@@ -95,11 +95,8 @@ see equipmentlib
 1. Complete the dataset by filling out the necessary files:  
     * dataset_description.json
     * README
-    * CHANGES
-    * LICENSE
     * participants.tsv
     * ...
-1. event ids
 1. Mark bad channels and epochs using
    the ```mne_bids inspect``` command, e.g.   
    ```shell

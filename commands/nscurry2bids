@@ -87,6 +87,7 @@ def nscurry2bids(raw_files, task, output_path, format):
         write_raw_bids(raw, bids_path, events_data=events,
                        event_id={str(e): e for e in np.unique(events[:, -1])},
                        overwrite=True, format=format)
+        os.remove(temp_raw_path)
 
 
 if __name__ == '__main__':

@@ -87,7 +87,8 @@ See `biosemi2bids --help` for more options.
 
 ### Log files
 
-# TODO: document
+# TODO: document logfile format
+see equipmentlib
 
 ## Steps to take after dataset generation
 

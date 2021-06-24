@@ -2,7 +2,7 @@
 
 import click
 import os
-
+import yaml
 import numpy as np
 from mne.io import read_raw_fif
 from mne_bids import BIDSPath, write_raw_bids
@@ -29,7 +29,17 @@ from convert2bids.utils import _copy_sourcedata
                         FIF format for MEG data.
                         
                         """)
-def biosemi2bids(raw_files, task, output_path, format):
+@click.option('-e', '--event_id', type=click.Path(), default=None,
+              help="""YAML File specifying event ids.
+
+                        e.g. event_id.yml can contain:
+
+                        ---
+                        target: 11
+                        non-target: 12
+                        blink: 100
+                        """)
+def biosemi2bids(raw_files, task, output_path, format, event_id):
     """Convert .bdf files to BIDS dataset.
 
     Clean the BioSemi .bdf files specified in RAW_FILES and add them to to a
@@ -73,10 +83,14 @@ def biosemi2bids(raw_files, task, output_path, format):
         subject_id = os.path.splitext(raw_path)[0]
         subject_id = subject_id.split('/')[-1]
         subject_id = ''.join(ch for ch in subject_id if ch.isalnum())
+        if event_id:
+            with open(event_id, 'r') as event_id_f:
+                event_ids = yaml.safe_load(event_id_f)
+        else:
+            event_ids = {str(e): e for e in np.unique(events[:, -1])}
         bids_path = BIDSPath(subject=subject_id, task=task, root=rawdata_path,
                              run=None, session=None)
-        write_raw_bids(raw, bids_path, events_data=events,
-                       event_id={str(e): e for e in np.unique(events[:, -1])},
+        write_raw_bids(raw, bids_path, events_data=events, event_id=event_ids,
                        overwrite=True, format=format)
         os.remove(temp_raw_path)
 

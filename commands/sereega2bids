@@ -1,0 +1,74 @@
+#!/usr/bin/env python
+import tempfile
+import yaml
+import click
+import os
+import numpy as np
+from mne.io import read_raw_fif
+from mne_bids import BIDSPath, write_raw_bids
+
+from convert2bids.neuroscan import NeuroScanCurry7Processor
+from convert2bids.sereega import SEREEGAProcessor
+from convert2bids.utils import _copy_sourcedata
+
+
+@click.command()
+@click.argument('raw_files', type=click.Path(exists=True), nargs=-1)
+@click.argument('task', type=click.Path())
+@click.argument('output_path', type=click.Path())
+@click.option('-f', '--format', type=str, default='BrainVision',
+              help="""'auto', 'Brainvision' or 'FIF'
+
+                        Controls the file format
+                        of the data after BIDS conversion. If 'auto', MNE-BIDS
+                        will attempt to convert the input data to BIDS without
+                        a change of the original file format. A conversion to a
+                        different file format (BrainVision, or FIF) will only
+                        take place when the original file format lacks some
+                        necessary features. When a str is passed, a conversion
+                        can be forced to the BrainVision format for EEG, or the
+                        FIF format for MEG data.
+
+                        """)
+@click.option('-e', '--event_id', type=click.Path(), default=None,
+              help="""YAML File specifying event ids.
+
+                        e.g. event_id.yml can contain:
+
+                        ---
+                        target: 11
+                        non-target: 12
+                        blink: 100
+                        """)
+def sereega2bids(raw_files, task, output_path, format, event_id):
+    """"""
+    rawdata_path = os.path.join(output_path, 'rawdata')
+    sourcedata_path = os.path.join(output_path, 'sourcedata')
+    for i, raw_path in enumerate(raw_files):
+        logfile_path = os.path.splitext(raw_path)[0] + '.txt'
+        _copy_sourcedata(raw_path, logfile_path, sourcedata_path)
+        processor = SEREEGAProcessor(raw_path, logfile_path)
+        raw, events = processor.clean()
+        # Temporarily save the modified data to disk, because `write_raw_bids`
+        # can only copy data, not save preloaded data.
+        _, temp_raw_path = tempfile.mkstemp()
+        temp_raw_path += '-raw.fif'
+        raw.save(temp_raw_path)
+        raw = read_raw_fif(temp_raw_path)
+        subject_id = os.path.splitext(raw_path)[0]
+        subject_id = subject_id.split('/')[-1]
+        subject_id = ''.join(ch for ch in subject_id if ch.isalnum())
+        if event_id:
+            with open(event_id, 'r') as event_id_f:
+                event_ids = yaml.safe_load(event_id_f)
+        else:
+            event_ids = {str(e): e for e in np.unique(events[:, -1])}
+        bids_path = BIDSPath(subject=subject_id, task=task, root=rawdata_path,
+                             run=None, session=None)
+        write_raw_bids(raw, bids_path, events_data=events, event_id=event_ids,
+                       overwrite=True, format=format)
+        os.remove(temp_raw_path)
+
+
+if __name__ == '__main__':
+    sereega2bids()

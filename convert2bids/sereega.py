@@ -21,3 +21,7 @@ class SEREEGAProcessor(Processor):
         stim_raw = RawArray(stim_raw_data, stim_raw_info)
         raw.add_channels([stim_raw])
         return raw
+
+    def _clean_raw(self, raw):
+        raw.set_montage('standard_1005')
+        return raw

@@ -48,9 +48,10 @@ def sereega2bids(raw_files, task, output_path, format, event_id):
     for raw_path in raw_files:
         subject = os.path.split(os.path.dirname(raw_path))[-1]
         run_count.setdefault(subject, -1)
-        run_count[subject] +=1
+        run_count[subject] += 1
         logfile_path = os.path.splitext(raw_path)[0] + '.txt'
-        _copy_sourcedata(raw_path, logfile_path, sourcedata_path)
+        _copy_sourcedata(raw_path, logfile_path,
+                         os.path.join(sourcedata_path, subject))
         processor = SEREEGAProcessor(raw_path, logfile_path)
         raw, events = processor.clean()
         # Temporarily save the modified data to disk, because `write_raw_bids`

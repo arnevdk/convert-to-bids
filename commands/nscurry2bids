@@ -73,7 +73,7 @@ def nscurry2bids(raw_files, task, output_path, format, event_id):
 
     cleans up the data's channel names and metadata, verifies the registration
     of all stimuli logged in respectively subject_01.txt and subject_02.txt
-    and writes the data to sub-subject01 and sub-subject02 with tasks oddball
+    and writes the data to sub-01 and sub-02 with tasks oddball
     to the BIDS dataset stored in oddball_32.
     """
     rawdata_path = os.path.join(output_path, 'rawdata')

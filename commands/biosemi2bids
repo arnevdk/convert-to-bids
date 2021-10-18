@@ -64,7 +64,7 @@ def biosemi2bids(raw_files, task, output_path, format, event_id):
 
     cleans up the data's channel names and metadata, verifies the registration
     of all stimuli logged in respectively subject_01.txt and subject_02.txt
-    and writes the data to sub-subject01 and sub-subject02 with tasks oddball
+    and writes the data to sub-01 and sub-02 with tasks oddball
     to the BIDS dataset stored in oddball_32.
     """
     rawdata_path = os.path.join(output_path, 'rawdata')
@@ -80,16 +80,21 @@ def biosemi2bids(raw_files, task, output_path, format, event_id):
         temp_raw_path += '-raw.fif'
         raw.save(temp_raw_path)
         raw = read_raw_fif(temp_raw_path)
-        subject_id = os.path.splitext(raw_path)[0]
-        subject_id = subject_id.split('/')[-1]
-        subject_id = ''.join(ch for ch in subject_id if ch.isalnum())
+        descriptor = os.path.splitext(raw_path)[0]
+        descriptor = descriptor.split('/')[-1]
+        parts = descriptor.split('_')
+        subject_id = parts[1]
+        if len(parts) > 2:
+            session_id = parts[3]
+        else:
+            session_id = None
         if event_id:
             with open(event_id, 'r') as event_id_f:
                 event_ids = yaml.safe_load(event_id_f)
         else:
             event_ids = {str(e): e for e in np.unique(events[:, -1])}
         bids_path = BIDSPath(subject=subject_id, task=task, root=rawdata_path,
-                             run=None, session=None)
+                             run=None, session=session_id)
         write_raw_bids(raw, bids_path, events_data=events, event_id=event_ids,
                        overwrite=True, format=format)
         os.remove(temp_raw_path)

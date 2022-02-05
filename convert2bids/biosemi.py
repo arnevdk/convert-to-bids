@@ -27,6 +27,7 @@ class BioSemiProcessor(Processor):
         return raw
 
     def _remap_extra_channels(self, raw):
+        """
         raw.rename_channels({
             'EXG1': 'TP9',
             'EXG2': 'TP10'
@@ -44,6 +45,27 @@ class BioSemiProcessor(Processor):
             'hEOG': 'eog',
             'vEOG': 'eog',
             'ECG': 'ecg',
+        })
+        """
+        raw.rename_channels({
+            'EXG1': 'TP9',
+            'EXG2': 'TP10',
+            'EXG3': 'hEOGl',
+            'EXG4': 'hEOGr',
+            'EXG5': 'vEOGu',
+            'EXG6': 'vEOGd',
+            'EXG7': 'ECGl',
+            'EXG8': 'ECGr',
+        })
+        raw.set_channel_types({
+            'TP9': 'eeg',
+            'TP10': 'eeg',
+            'hEOGl': 'eog',
+            'hEOGr': 'eog',
+            'vEOGl': 'eog',
+            'vEOGr': 'eog',
+            'ECGl': 'ecg',
+            'ECGr': 'ecg',
         })
         return raw
 
